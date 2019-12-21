@@ -2,40 +2,34 @@
 
 """
 I intend to make a script that would give me books and pages of an author.
-That's all because I, personally, need that quite a lot.
+That's all because I, personally, need that quite a lot. 
+PS: short book as of less time.
 """
+
+import requests
 import argparse
-from config import config
-from goodreads import client
+from lxml import html
 
 parser = argparse.ArgumentParser(description="Books Information")
-parser.add_argument('--auth', '-a', type=int, required=True, help="author number")
-
+parser.add_argument('--auth', '-i', type=int, required=True, help="author number")
+parser.add_argument('--name', '-n', type=str, required=True, help="author name")
 args = parser.parse_args()
 
-gc = client.GoodreadsClient(config['key'], config['secret'])
-author = gc.author(args.auth)
-
-name = author.name
-name = name.replace(' ', '_')
+namelist = (args.name).split()
+name = "_".join([x.capitalize() for x in namelist])
 
 query_name = str(args.auth) + "." + name
-
 query_url = "https://www.goodreads.com/author/show/" + query_name
-
-from lxml import html
-import requests
 
 page = requests.get(query_url)
 webpage = html.fromstring(page.content)
 
 links = webpage.xpath('//a/@href')
-
 booklinks = list(set([x for x in links if x.startswith("/book/show/")]))
 
 url_add = "https://www.goodreads.com"
 books_data = []
-for bl in booklinks[:4]:
+for bl in booklinks[:2]:
 	d = {}
 
 	bigurl = url_add + bl
@@ -49,10 +43,8 @@ for bl in booklinks[:4]:
 	d['ratings'] = webpage.xpath("//meta[@itemprop='ratingCount']/@content")
 	
 	books_data.append(d)
-	# break
 
-# print(books_data)
 for bd in books_data:
-	print("Name: {a} | Pages: {b} | No-of-Ratings: {c} | Avg Ratings: {d}".format(a=bd['name'], b=bd['pages'], c=bd['ratings'], d=bd['avg_ratings']))
+	print("Name: {a} \n\tPages: {b} \n\tNo-of-Ratings: {c} \n\tAvg Ratings: {d}".format(a=bd['name'], b=bd['pages'], c=bd['ratings'], d=bd['avg_ratings']))
 
 
