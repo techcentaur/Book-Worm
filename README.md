@@ -13,7 +13,7 @@ Given author name get all the books, pages, and information related.
 - Result would be:
 
 ```console
- solanki@hobbes   ~/GitHub/Book-Worm     master    python3 worm.py -i 957894 -n "Albert Camus"         1 ↵  11    915  17:24:19  
+solanki@hobbes ~/GitHub/Book-Worm     master    python3 worm.py -i 957894 -n "Albert Camus" 
 Name: Caligula 
 	Pages: ['224 pages'] 
 	No-of-Ratings: ['8100'] 
@@ -59,7 +59,7 @@ Well, so I will select `A Happy Death`  in this case, as of my reason to study b
 
 ## Argparse Help
 ```bash
- solanki@hobbes   ~/GitHub/Book-Worm     master    python3 worm.py -h                                      11    915  17:24:35  
+solanki@hobbes ~/GitHub/Book-Worm     master    python3 worm.py -h 
 usage: worm.py [-h] --auth AUTH --name NAME
 
 Books Information
